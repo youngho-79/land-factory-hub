@@ -7,7 +7,7 @@ const PHONE_NUMBER = import.meta.env.VITE_PHONE_NUMBER || '010-2006-8279';
 const AGENCY_NAME = import.meta.env.VITE_AGENCY_NAME || 'px마을 부동산';
 const AGENT_NAME = import.meta.env.VITE_AGENT_NAME || '이영호';
 const REGISTRATION_NO = import.meta.env.VITE_REGISTRATION_NO || '제41480-2023-00017호';
-const AGENCY_ADDRESS = import.meta.env.VITE_AGENCY_ADDRESS || '경기도 파주시 학령로105(아동동)';
+const AGENCY_ADDRESS = import.meta.env.VITE_AGENCY_ADDRESS || '경기도 파주시 아동동 85-13';
 const BUSINESS_NO = '768-51-00786';
 
 const About = () => {
@@ -108,7 +108,7 @@ const About = () => {
             {/* 지도 자리 (정확한 핀 표시) */}
             <div className="mt-6 rounded-xl h-64 flex items-center justify-center border border-border overflow-hidden shadow-sm">
               <iframe
-                src={`https://maps.google.com/maps?q=${encodeURIComponent('경기도 파주시 학령로 105')}&t=&z=17&ie=UTF8&iwloc=&output=embed`}
+                src={`https://maps.google.com/maps?q=${encodeURIComponent('경기도 파주시 아동동 85-13')}&t=&z=17&ie=UTF8&iwloc=&output=embed`}
                 width="100%"
                 height="100%"
                 style={{ border: 0 }}
