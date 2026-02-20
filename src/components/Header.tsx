@@ -1,6 +1,6 @@
 import { Link, useLocation } from 'react-router-dom';
 import { useState } from 'react';
-import { Menu, X, ChevronDown, Home } from 'lucide-react';
+import { Menu, X, ChevronDown, Home, Phone } from 'lucide-react';
 
 const TELEGRAM_URL = import.meta.env.VITE_TELEGRAM_URL || 'https://t.me/your_id';
 
@@ -47,8 +47,8 @@ const Header = () => {
             {mainNav.map((item) => (
               <Link key={item.path} to={item.path}
                 className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${location.pathname === item.path
-                    ? 'bg-accent text-accent-foreground'
-                    : 'text-primary-foreground/80 hover:text-primary-foreground hover:bg-white/10'
+                  ? 'bg-accent text-accent-foreground'
+                  : 'text-primary-foreground/80 hover:text-primary-foreground hover:bg-white/10'
                   }`}
               >
                 {item.label}
@@ -74,10 +74,15 @@ const Header = () => {
                 </div>
               )}
             </div>
+
+            {/* 전화상담 추가 (태블릿/데스크탑) */}
+            <a href="tel:010-2006-8279" className="hidden lg:flex items-center gap-1.5 px-3 py-2 rounded-md font-bold text-accent hover:text-accent/80 transition-colors ml-2">
+              <Phone className="w-4 h-4" /> 전화상담 010-2006-8279
+            </a>
           </nav>
 
           <a href={TELEGRAM_URL} target="_blank" rel="noopener noreferrer"
-            className="hidden md:inline-flex items-center gap-2 bg-accent text-accent-foreground px-4 py-2 rounded-md text-sm font-semibold hover:opacity-90 transition-opacity">
+            className="hidden sm:inline-flex items-center gap-2 bg-accent text-accent-foreground px-4 py-2 rounded-md text-sm font-semibold hover:opacity-90 transition-opacity">
             💬 텔레그램 상담
           </a>
 
@@ -105,8 +110,12 @@ const Header = () => {
                 {item.label}
               </Link>
             ))}
+            <div className="px-4 py-1 mt-2 mb-1 border-t border-white/10"></div>
+            <a href="tel:010-2006-8279" className="flex items-center justify-center gap-2 px-4 py-3 text-accent font-bold text-sm bg-accent/10 rounded-md mx-2 mb-2">
+              <Phone className="w-4 h-4" /> 전화상담 010-2006-8279
+            </a>
             <a href={TELEGRAM_URL} target="_blank" rel="noopener noreferrer"
-              className="block px-4 py-2.5 bg-accent text-accent-foreground rounded-md text-sm font-semibold text-center mt-2">
+              className="block px-4 py-3 bg-accent text-accent-foreground rounded-md text-sm font-semibold text-center mx-2 mt-2">
               💬 텔레그램 상담
             </a>
           </nav>

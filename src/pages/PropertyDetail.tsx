@@ -197,13 +197,18 @@ const PropertyDetail = () => {
           </div>
 
           {/* 위치 지도 — 구글맵 iframe */}
-          <div className="bg-card border border-border rounded-xl overflow-hidden mb-6">
-            <div className="px-6 py-3 bg-muted flex items-center justify-between">
-              <h3 className="font-semibold text-foreground">📍 대략 위치</h3>
-              <span className="text-xs text-muted-foreground">정확한 지번은 문의 시 안내드립니다</span>
+          <div className="bg-card border-2 border-accent/20 rounded-xl overflow-hidden mb-8 shadow-sm">
+            <div className="px-6 py-4 bg-muted/50 flex items-center justify-between border-b border-border">
+              <h3 className="font-bold text-foreground text-lg flex items-center gap-2">
+                <MapPin className="text-accent" />
+                대략 위치
+              </h3>
+              <span className="text-xs font-semibold text-accent bg-accent/10 px-3 py-1.5 rounded-full">
+                정확한 지번은 문의 시 안내드립니다
+              </span>
             </div>
             {/* 구글맵 연동 */}
-            <div className="relative w-full h-72 bg-muted">
+            <div className="relative w-full h-[400px] bg-muted">
               {/* 단순 주소 검색 쿼리로 iframe 연동 */}
               <iframe
                 src={`https://www.google.com/maps/embed/v1/place?key=${import.meta.env.VITE_GEMINI_API_KEY}&q=${encodeURIComponent(property.address.replace(/\s+\d+.*$/, ''))}&zoom=14`}
