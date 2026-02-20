@@ -11,6 +11,9 @@ import NotFound from "./pages/NotFound";
 import AdminLogin from "./pages/AdminLogin";
 import AdminDashboard from "./pages/AdminDashboard";
 import PropertyRegister from "./pages/PropertyRegister";
+import Blog from "./pages/Blog";
+import BlogDetail from "./pages/BlogDetail";
+import AdminBlog from "./pages/AdminBlog";
 
 const queryClient = new QueryClient();
 
@@ -33,10 +36,13 @@ const App = () => (
           <Route path="/properties" element={<Properties />} />
           <Route path="/properties/:id" element={<PropertyDetail />} />
           <Route path="/about" element={<About />} />
+          <Route path="/blog" element={<Blog />} />
+          <Route path="/blog/:id" element={<BlogDetail />} />
           {/* 관리자 */}
           <Route path="/admin" element={<AdminLogin />} />
           <Route path="/admin/dashboard" element={<AdminGuard><AdminDashboard /></AdminGuard>} />
           <Route path="/admin/register" element={<AdminGuard><PropertyRegister /></AdminGuard>} />
+          <Route path="/admin/blog" element={<AdminGuard><AdminBlog /></AdminGuard>} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

@@ -12,6 +12,7 @@ const Header = () => {
   const mainNav = [
     { label: '홈', path: '/' },
     { label: '사무소 소개', path: '/about' },
+    { label: '부동산 소식', path: '/blog' },
   ];
 
   const propertyMenuItems = [
@@ -19,8 +20,8 @@ const Header = () => {
     { label: '공장 임대', path: '/properties?type=공장&deal=임대' },
     { label: '창고 매매', path: '/properties?type=창고&deal=매매' },
     { label: '창고 임대', path: '/properties?type=창고&deal=임대' },
-    { label: '토지',     path: '/properties?type=토지' },
-    { label: '기타',     path: '/properties?type=기타' },
+    { label: '토지', path: '/properties?type=토지' },
+    { label: '기타', path: '/properties?type=기타' },
   ];
 
   const isPropertiesActive = location.pathname === '/properties';
@@ -45,11 +46,10 @@ const Header = () => {
           <nav className="hidden md:flex items-center gap-1">
             {mainNav.map((item) => (
               <Link key={item.path} to={item.path}
-                className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-                  location.pathname === item.path
+                className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${location.pathname === item.path
                     ? 'bg-accent text-accent-foreground'
                     : 'text-primary-foreground/80 hover:text-primary-foreground hover:bg-white/10'
-                }`}
+                  }`}
               >
                 {item.label}
               </Link>
@@ -57,9 +57,8 @@ const Header = () => {
 
             {/* 매물 드롭다운 */}
             <div className="relative" onMouseEnter={() => setPropertyMenuOpen(true)} onMouseLeave={() => setPropertyMenuOpen(false)}>
-              <button className={`flex items-center gap-1 px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-                isPropertiesActive ? 'bg-accent text-accent-foreground' : 'text-primary-foreground/80 hover:text-primary-foreground hover:bg-white/10'
-              }`}>
+              <button className={`flex items-center gap-1 px-4 py-2 rounded-md text-sm font-medium transition-colors ${isPropertiesActive ? 'bg-accent text-accent-foreground' : 'text-primary-foreground/80 hover:text-primary-foreground hover:bg-white/10'
+                }`}>
                 매물 <ChevronDown className="w-3.5 h-3.5" />
               </button>
               {propertyMenuOpen && (
@@ -92,9 +91,8 @@ const Header = () => {
           <nav className="md:hidden pb-4 space-y-1">
             {mainNav.map((item) => (
               <Link key={item.path} to={item.path} onClick={() => setIsMenuOpen(false)}
-                className={`block px-4 py-2.5 rounded-md text-sm font-medium transition-colors ${
-                  location.pathname === item.path ? 'bg-accent text-accent-foreground' : 'text-primary-foreground/80 hover:text-primary-foreground hover:bg-white/10'
-                }`}
+                className={`block px-4 py-2.5 rounded-md text-sm font-medium transition-colors ${location.pathname === item.path ? 'bg-accent text-accent-foreground' : 'text-primary-foreground/80 hover:text-primary-foreground hover:bg-white/10'
+                  }`}
               >
                 {item.label}
               </Link>

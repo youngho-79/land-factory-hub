@@ -1,24 +1,40 @@
+import { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { ArrowLeft, MapPin, Phone, Share2, Printer } from 'lucide-react';
+import { ArrowLeft, MapPin, Phone, Share2, Printer, MessageSquareText } from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { sampleProperties } from '@/lib/sampleData';
 import { sqmToPyeong, pricePerPyeong, formatPrice, maskAddress, getYoutubeEmbedUrl } from '@/lib/types';
+import LoanCalculator from '@/components/LoanCalculator';
+import ConsultationModal from '@/components/ConsultationModal';
+import KakaoMap from '@/components/KakaoMap';
 
 const TELEGRAM_URL = import.meta.env.VITE_TELEGRAM_URL || 'https://t.me/your_id';
 const PHONE_NUMBER = import.meta.env.VITE_PHONE_NUMBER || '031-123-4567';
 
 const PropertyDetail = () => {
-  const { id } = useParams();  const property = sampleProperties.find((p) => p.id === id);
+  const { id } = useParams();
+  const property = sampleProperties.find((p) => p.id === id);
+  const [isConsultationOpen, setIsConsultationOpen] = useState(false);
 
   const handleShare = async () => {
+    const shareData = {
+      title: property?.title,
+      text: `[${property?.title}]\n금액: ${formatPrice(property?.price || 0)}\n면적: ${sqmToPyeong(property?.areaSqm || 0)}평\n\n자세한 정보는 아래 링크에서 확인하세요.`,
+      url: window.location.href,
+    };
+
     if (navigator.share) {
-      await navigator.share({ title: property?.title, url: window.location.href });
+      try {
+        await navigator.share(shareData);
+      } catch (e) {
+        console.log('공유 취소됨');
+      }
     } else {
-      navigator.clipboard.writeText(window.location.href);
-      alert('링크가 복사되었습니다!');
+      navigator.clipboard.writeText(`${shareData.text}\n${shareData.url}`);
+      alert('매물 정보와 링크가 클립보드에 복사되었습니다!');
     }
   };
 
@@ -94,12 +110,12 @@ const PropertyDetail = () => {
                 {property.type === '토지' ? '🌿' : property.type === '공장' ? '🏭' : '🏢'}
               </div>
               <div className="grid grid-cols-2 gap-2">
-                {(property.images.length > 0 ? property.images.slice(0, 4) : [1,2,3,4]).map((img, i) => (
+                {(property.images.length > 0 ? property.images.slice(0, 4) : [1, 2, 3, 4]).map((img, i) => (
                   <div key={i} className="aspect-square bg-muted rounded overflow-hidden">
                     {typeof img === 'string' && img.startsWith('data') ? (
-                      <img src={img} alt={`사진 ${i+1}`} className="w-full h-full object-cover" />
+                      <img src={img} alt={`사진 ${i + 1}`} className="w-full h-full object-cover" />
                     ) : (
-                      <div className="w-full h-full flex items-center justify-center text-muted-foreground/30 text-xs">사진 {i+1}</div>
+                      <div className="w-full h-full flex items-center justify-center text-muted-foreground/30 text-xs">사진 {i + 1}</div>
                     )}
                   </div>
                 ))}
@@ -134,14 +150,12 @@ const PropertyDetail = () => {
 
           {/* 문의 버튼 */}
           <div className="flex flex-col sm:flex-row gap-3 mb-6">
-            <a href={`${TELEGRAM_URL}?text=${encodeURIComponent(`[${property.title}] 매물 문의드립니다. ${window.location.href}`)}`}
-              target="_blank" rel="noopener noreferrer"
+            <button
+              onClick={() => setIsConsultationOpen(true)}
               className="flex-1 inline-flex items-center justify-center gap-2 bg-[#229ED9] text-white py-3.5 rounded-xl font-semibold hover:opacity-90 transition-opacity text-sm">
-              <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248-1.97 9.289c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L8.32 14.617l-2.96-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.496.969z"/>
-              </svg>
-              텔레그램으로 문의하기
-            </a>
+              <MessageSquareText className="w-5 h-5" />
+              온라인 상담 문의 신청
+            </button>
             <a href={`tel:${PHONE_NUMBER}`}
               className="flex-1 inline-flex items-center justify-center gap-2 border-2 border-border text-foreground py-3.5 rounded-xl font-semibold hover:border-accent hover:text-accent transition-colors text-sm">
               <Phone className="w-4 h-4" /> {PHONE_NUMBER}
@@ -160,6 +174,9 @@ const PropertyDetail = () => {
               ))}
             </div>
           </div>
+
+          {/* 대출 계산기 */}
+          <LoanCalculator price={property.price} />
 
           {/* 토지정보 */}
           <div className="bg-card border border-border rounded-xl overflow-hidden mb-6">
@@ -186,19 +203,9 @@ const PropertyDetail = () => {
               <h3 className="font-semibold text-foreground">📍 대략 위치</h3>
               <span className="text-xs text-muted-foreground">정확한 위치는 문의 시 안내드립니다</span>
             </div>
-            {/* 시/군/구 레벨 검색어로 카카오맵 iframe */}
+            {/* 카카오맵 연동 */}
             <div className="relative w-full h-72 bg-muted">
-              <iframe
-                src={`https://map.kakao.com/link/search/${encodeURIComponent(
-                  // 번지 제거하고 시/군/구/동 까지만 추출
-                  property.address.replace(/\s+\d+.*$/, '')
-                )}`}
-                className="w-full h-full border-0"
-                title="대략 위치"
-                loading="lazy"
-              />
-              {/* 보안 오버레이 — 정확한 위치 클릭 방지 */}
-              <div className="absolute inset-0 pointer-events-none" />
+              <KakaoMap address={property.address} />
             </div>
             <div className="px-6 py-3 flex items-center justify-between border-t border-border">
               <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
@@ -221,12 +228,12 @@ const PropertyDetail = () => {
             <h3 className="font-semibold text-foreground mb-3">⚖️ 중개사무소 정보 <span className="text-xs font-normal text-muted-foreground">(공인중개사법 제18조의2)</span></h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2">
               {[
-                { label: '사무소 명칭', value: property.agencyName || import.meta.env.VITE_AGENCY_NAME || '-' },
-                { label: '대표 공인중개사', value: property.agentName || import.meta.env.VITE_AGENT_NAME || '-' },
-                { label: '등록번호', value: property.registrationNo || import.meta.env.VITE_REGISTRATION_NO || '-' },
-                { label: '소재지', value: property.agencyAddress || import.meta.env.VITE_AGENCY_ADDRESS || '-' },
-                { label: '연락처', value: property.agencyPhone || import.meta.env.VITE_PHONE_NUMBER || '-' },
-                { label: '위반건축물', value: property.illegalBuilding ? '⚠️ 해당' : '해당없음' },
+                { label: '사무소 명칭', value: property.agencyName || import.meta.env.VITE_AGENCY_NAME || 'px마을 부동산' },
+                { label: '대표 공인중개사', value: property.agentName || import.meta.env.VITE_AGENT_NAME || '이영호' },
+                { label: '등록번호', value: property.registrationNo || import.meta.env.VITE_REGISTRATION_NO || '제41480-2023-00017호' },
+                { label: '사업자등록번호', value: '768-51-00786' },
+                { label: '소재지', value: property.agencyAddress || import.meta.env.VITE_AGENCY_ADDRESS || '경기도 파주시 학령로105(아동동)' },
+                { label: '연락처', value: property.agencyPhone || import.meta.env.VITE_PHONE_NUMBER || '031-123-4567' },
               ].map((row) => (
                 <div key={row.label} className="flex gap-2">
                   <span className="text-muted-foreground w-28 shrink-0">{row.label}</span>
@@ -241,11 +248,11 @@ const PropertyDetail = () => {
             <h3 className="font-semibold text-foreground mb-1">이 매물이 마음에 드시나요?</h3>
             <p className="text-sm text-muted-foreground mb-4">전문 공인중개사가 빠르게 답변드립니다.</p>
             <div className="flex flex-col sm:flex-row gap-3">
-              <a href={`${TELEGRAM_URL}?text=${encodeURIComponent(`[${property.title}] 매물 문의`)}`}
-                target="_blank" rel="noopener noreferrer"
+              <button
+                onClick={() => setIsConsultationOpen(true)}
                 className="flex-1 inline-flex items-center justify-center gap-2 bg-accent text-accent-foreground py-3 rounded-lg font-semibold hover:opacity-90 transition-opacity text-sm">
-                💬 텔레그램 상담 (빠른 답변)
-              </a>
+                💬 온라인 상담 문의 (빠른 접수)
+              </button>
               <a href={`tel:${PHONE_NUMBER}`}
                 className="flex-1 inline-flex items-center justify-center gap-2 border border-border text-foreground py-3 rounded-lg font-semibold hover:border-accent hover:text-accent transition-colors text-sm">
                 <Phone className="w-4 h-4" /> 전화 문의
@@ -256,6 +263,15 @@ const PropertyDetail = () => {
         </div>
       </main>
       <Footer />
+
+      {/* 상담 모달 */}
+      {isConsultationOpen && (
+        <ConsultationModal
+          propertyId={property.id}
+          propertyTitle={property.title}
+          onClose={() => setIsConsultationOpen(false)}
+        />
+      )}
     </div>
   );
 };

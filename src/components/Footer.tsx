@@ -2,9 +2,11 @@ import { Home } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const PHONE_NUMBER = import.meta.env.VITE_PHONE_NUMBER || '031-123-4567';
-const AGENCY_ADDRESS = import.meta.env.VITE_AGENCY_ADDRESS || '경기도 파주시';
-const REGISTRATION_NO = import.meta.env.VITE_REGISTRATION_NO || '';
+const AGENCY_ADDRESS = import.meta.env.VITE_AGENCY_ADDRESS || '경기도 파주시 학령로105(아동동)';
+const REGISTRATION_NO = import.meta.env.VITE_REGISTRATION_NO || '제41480-2023-00017호';
 const TELEGRAM_URL = import.meta.env.VITE_TELEGRAM_URL || 'https://t.me/your_id';
+const BUSINESS_NO = '768-51-00786';
+const AGENT_NAME = '이영호';
 
 const Footer = () => {
   return (
@@ -50,8 +52,7 @@ const Footer = () => {
           </div>
         </div>
         <div className="border-t border-primary-foreground/10 mt-8 pt-6 text-center text-xs text-primary-foreground/50">
-          © 2026 PX마을 부동산. All rights reserved.
-          {REGISTRATION_NO && ` | 등록번호: ${REGISTRATION_NO}`}
+          Copyright px마을 부동산. All rights reserved. | 대표: {AGENT_NAME} | 등록번호: {REGISTRATION_NO} | 사업자등록번호: {BUSINESS_NO}
         </div>
       </div>
     </footer>

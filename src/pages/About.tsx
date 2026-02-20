@@ -4,10 +4,11 @@ import { Award, Clock, Users, MapPin, Phone } from 'lucide-react';
 
 const TELEGRAM_URL = import.meta.env.VITE_TELEGRAM_URL || 'https://t.me/your_id';
 const PHONE_NUMBER = import.meta.env.VITE_PHONE_NUMBER || '031-123-4567';
-const AGENCY_NAME = import.meta.env.VITE_AGENCY_NAME || 'PX마을 부동산';
-const AGENT_NAME = import.meta.env.VITE_AGENT_NAME || '대표자';
-const REGISTRATION_NO = import.meta.env.VITE_REGISTRATION_NO || '';
-const AGENCY_ADDRESS = import.meta.env.VITE_AGENCY_ADDRESS || '경기도 파주시';
+const AGENCY_NAME = import.meta.env.VITE_AGENCY_NAME || 'px마을 부동산';
+const AGENT_NAME = import.meta.env.VITE_AGENT_NAME || '이영호';
+const REGISTRATION_NO = import.meta.env.VITE_REGISTRATION_NO || '제41480-2023-00017호';
+const AGENCY_ADDRESS = import.meta.env.VITE_AGENCY_ADDRESS || '경기도 파주시 학령로105(아동동)';
+const BUSINESS_NO = '768-51-00786';
 
 const About = () => {
   const features = [
@@ -91,7 +92,8 @@ const About = () => {
                 {[
                   { label: '사무소명', value: AGENCY_NAME },
                   { label: '대표', value: AGENT_NAME },
-                  { label: '등록번호', value: REGISTRATION_NO || '(환경변수 VITE_REGISTRATION_NO 설정 필요)' },
+                  { label: '등록번호', value: REGISTRATION_NO },
+                  { label: '사업자등록번호', value: BUSINESS_NO },
                   { label: '주소', value: AGENCY_ADDRESS },
                   { label: '전화', value: PHONE_NUMBER },
                   { label: '영업시간', value: '평일 09:00 ~ 18:00 / 토요일 09:00 ~ 13:00' },
