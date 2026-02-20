@@ -62,15 +62,17 @@ const Header = () => {
                 매물 <ChevronDown className="w-3.5 h-3.5" />
               </button>
               {propertyMenuOpen && (
-                <div className="absolute top-full left-0 mt-1 bg-card border border-border rounded-lg shadow-xl py-1 w-36 z-50">
-                  {propertyMenuItems.map((item) => (
-                    <Link key={item.path} to={item.path}
-                      className="block px-4 py-2.5 text-sm text-foreground hover:bg-accent hover:text-accent-foreground transition-colors"
-                      onClick={() => setPropertyMenuOpen(false)}
-                    >
-                      {item.label}
-                    </Link>
-                  ))}
+                <div className="absolute top-full left-0 pt-2 w-36 z-50">
+                  <div className="bg-card border border-border rounded-lg shadow-xl py-1">
+                    {propertyMenuItems.map((item) => (
+                      <Link key={item.path} to={item.path}
+                        className="block px-4 py-2.5 text-sm text-foreground hover:bg-accent hover:text-accent-foreground transition-colors"
+                        onClick={() => setPropertyMenuOpen(false)}
+                      >
+                        {item.label}
+                      </Link>
+                    ))}
+                  </div>
                 </div>
               )}
             </div>
