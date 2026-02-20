@@ -30,10 +30,10 @@ const Index = () => {
             토지 · 공장 · 창고 전문
           </p>
           <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold text-primary-foreground mb-4 leading-tight animate-fade-in" style={{ animationDelay: '0.1s' }}>
-            대한공인중개사사무소
+            PX마을 부동산
           </h1>
           <p className="text-primary-foreground/70 text-base md:text-lg mb-8 max-w-xl mx-auto animate-fade-in" style={{ animationDelay: '0.2s' }}>
-            20년 경력의 전문가가 최적의 산업용 부동산을 찾아드립니다
+            파주 산업 부동산 전문가 그룹, 현장 중심의 정확한 중개
           </p>
 
           {/* Search bar */}
@@ -57,9 +57,9 @@ const Index = () => {
           {/* Quick stats */}
           <div className="flex justify-center gap-8 md:gap-16 mt-10 animate-fade-in" style={{ animationDelay: '0.4s' }}>
             {[
-              { label: '등록 매물', value: '150+' },
-              { label: '거래 실적', value: '800+' },
-              { label: '경력', value: '20년' },
+              { label: '등록 매물', value: '100+' },
+              { label: '거래 실적', value: '500+' },
+              { label: '전문성', value: '산업용' },
             ].map((stat) => (
               <div key={stat.label} className="text-center">
                 <div className="text-2xl md:text-3xl font-bold text-accent">{stat.value}</div>
@@ -108,8 +108,8 @@ const Index = () => {
             전문가와 함께하세요
           </h2>
           <p className="text-primary-foreground/70 max-w-xl mx-auto mb-8 leading-relaxed">
-            토지, 공장, 창고 매매·임대 전문입니다.<br />
-            최적의 매물을 찾아 빠르고 정확하게 안내해드립니다.
+            파주 전 지역 공장·창고·토지 매매·임대 전문입니다.<br />
+            사장님의 성공 비즈니스 파트너로서 최선을 다하겠습니다.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
@@ -121,7 +121,7 @@ const Index = () => {
               💬 텔레그램 상담하기
             </a>
             <a
-              href="tel:031-123-4567"
+              href="tel:031-957-8949"
               className="inline-flex items-center justify-center gap-2 border-2 border-primary-foreground/30 text-primary-foreground px-8 py-3 rounded-lg font-semibold hover:border-accent hover:text-accent transition-colors"
             >
               <Phone className="w-4 h-4" /> 전화 상담

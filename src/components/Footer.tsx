@@ -9,11 +9,11 @@ const Footer = () => {
           <div>
             <div className="flex items-center gap-2 mb-4">
               <Building2 className="w-6 h-6 text-accent" />
-              <span className="font-bold text-lg">대한공인중개사사무소</span>
+              <span className="font-bold text-lg">PX마을 공인중개사 사무소</span>
             </div>
             <p className="text-primary-foreground/70 text-sm leading-relaxed">
-              토지·공장·창고 전문<br />
-              20년 경력의 신뢰할 수 있는 부동산 파트너
+              파주 산업용 부동산(공장·창고·토지) 전문<br />
+              현장 중심의 정확한 중개 약속드립니다
             </p>
           </div>
           <div>
@@ -27,15 +27,14 @@ const Footer = () => {
           <div>
             <h4 className="font-semibold text-accent mb-4">연락처</h4>
             <div className="space-y-2 text-sm text-primary-foreground/70">
-              <p>📞 031-123-4567</p>
-              <p>📱 010-1234-5678</p>
-              <p>📧 daehan@realestate.co.kr</p>
-              <p>📍 경기도 화성시 팔탄면 시청로 123</p>
+              <p>📞 031-957-8949</p>
+              <p>📍 경기도 파주시 학령로 105</p>
+              <p>🏢 등록번호: 41480-2023-00017</p>
             </div>
           </div>
         </div>
         <div className="border-t border-primary-foreground/10 mt-8 pt-6 text-center text-xs text-primary-foreground/50">
-          © 2026 대한공인중개사사무소. All rights reserved. | 등록번호: 41590-2020-00123
+          © 2026 PX마을 공인중개사 사무소. All rights reserved. | 대표: 이영호
         </div>
       </div>
     </footer>
