@@ -1,24 +1,64 @@
 <!doctype html>
-<html lang="en">
+<html lang="ko">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- TODO: Set the document title to the name of your application -->
-    <title>Lovable App</title>
-    <meta name="description" content="Lovable Generated Project" />
-    <meta name="author" content="Lovable" />
 
-    <!-- TODO: Update og:title to match your application name -->
-    <meta property="og:title" content="Lovable App" />
-    <meta property="og:description" content="Lovable Generated Project" />
+    <!-- 기본 SEO -->
+    <title>PX마을 부동산 — 파주 토지·공장·창고 전문 공인중개사</title>
+    <meta name="description" content="경기도 파주 토지·공장·창고 전문 공인중개사사무소. 공장 매매·임대, 창고 매매·임대, 토지 거래 전문. 파주·고양·김포 산업용 부동산 문의 환영." />
+    <meta name="keywords" content="파주공장매매,파주공장임대,파주창고매매,파주창고임대,파주토지,경기북부공장,산업용부동산,공인중개사,PX마을부동산" />
+    <meta name="author" content="PX마을 부동산" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://landhub-korea.lovable.app/" />
+
+    <!-- Open Graph (카카오·페이스북·라인 공유) -->
     <meta property="og:type" content="website" />
-    <meta property="og:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
+    <meta property="og:site_name" content="PX마을 부동산" />
+    <meta property="og:title" content="PX마을 부동산 — 파주 토지·공장·창고 전문" />
+    <meta property="og:description" content="경기도 파주 토지·공장·창고 전문 공인중개사사무소. 공장·창고 매매·임대, 토지 거래 전문." />
+    <meta property="og:url" content="https://landhub-korea.lovable.app/" />
+    <meta property="og:image" content="https://landhub-korea.lovable.app/hero-bg.jpg" />
+    <meta property="og:locale" content="ko_KR" />
 
+    <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:site" content="@Lovable" />
-    <meta name="twitter:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
-  </head>
+    <meta name="twitter:title" content="PX마을 부동산 — 파주 토지·공장·창고 전문" />
+    <meta name="twitter:description" content="경기도 파주 토지·공장·창고 전문 공인중개사사무소." />
+    <meta name="twitter:image" content="https://landhub-korea.lovable.app/hero-bg.jpg" />
 
+    <!-- 네이버 서치어드바이저 (발급 후 content 교체) -->
+    <!-- <meta name="naver-site-verification" content="여기에_네이버_인증코드" /> -->
+
+    <!-- 구글 서치콘솔 (발급 후 content 교체) -->
+    <!-- <meta name="google-site-verification" content="여기에_구글_인증코드" /> -->
+
+    <!-- JSON-LD 구조화 데이터 (구글·LLM 리치결과용) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "RealEstateAgent",
+      "name": "PX마을 부동산",
+      "description": "경기도 파주 토지·공장·창고 전문 공인중개사사무소",
+      "url": "https://landhub-korea.lovable.app",
+      "image": "https://landhub-korea.lovable.app/office.jpg",
+      "telephone": "",
+      "address": {
+        "@type": "PostalAddress",
+        "addressRegion": "경기도",
+        "addressLocality": "파주시",
+        "addressCountry": "KR"
+      },
+      "areaServed": ["파주시", "고양시", "김포시", "경기도"],
+      "serviceType": ["토지 매매", "공장 매매", "공장 임대", "창고 매매", "창고 임대"],
+      "openingHours": ["Mo-Fr 09:00-18:00", "Sa 09:00-13:00"],
+      "sameAs": []
+    }
+    </script>
+
+    <!-- 파비콘 -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏠</text></svg>" />
+  </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>

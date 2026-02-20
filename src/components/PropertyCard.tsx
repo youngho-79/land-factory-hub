@@ -11,6 +11,7 @@ const typeColors: Record<string, string> = {
   '토지': 'bg-emerald-600 text-white',
   '공장': 'bg-blue-600 text-white',
   '창고': 'bg-amber-600 text-white',
+  '기타': 'bg-purple-600 text-white',
 };
 
 const PropertyCard = ({ property }: PropertyCardProps) => {

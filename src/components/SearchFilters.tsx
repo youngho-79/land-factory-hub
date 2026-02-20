@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Search } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -6,6 +6,8 @@ import { REGIONS } from '@/lib/types';
 
 interface SearchFiltersProps {
   onFilter: (filters: FilterState) => void;
+  initialType?: string;
+  initialDeal?: string;
 }
 
 export interface FilterState {
@@ -17,15 +19,23 @@ export interface FilterState {
   areaRange: string;
 }
 
-const SearchFilters = ({ onFilter }: SearchFiltersProps) => {
+const SearchFilters = ({ onFilter, initialType = 'all', initialDeal = 'all' }: SearchFiltersProps) => {
   const [filters, setFilters] = useState<FilterState>({
     keyword: '',
-    dealType: 'all',
-    propertyType: 'all',
+    dealType: initialDeal !== 'all' ? initialDeal : 'all',
+    propertyType: initialType !== 'all' ? initialType : 'all',
     region: 'all',
     priceRange: 'all',
     areaRange: 'all',
   });
+
+  useEffect(() => {
+    setFilters((prev) => ({
+      ...prev,
+      propertyType: initialType !== 'all' ? initialType : 'all',
+      dealType: initialDeal !== 'all' ? initialDeal : 'all',
+    }));
+  }, [initialType, initialDeal]);
 
   const update = (key: keyof FilterState, value: string) => {
     const next = { ...filters, [key]: value };
@@ -35,7 +45,6 @@ const SearchFilters = ({ onFilter }: SearchFiltersProps) => {
 
   return (
     <div className="bg-card rounded-lg p-4 md:p-6 shadow-md border border-border space-y-4">
-      {/* Keyword search */}
       <div className="relative">
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
         <Input
@@ -45,8 +54,6 @@ const SearchFilters = ({ onFilter }: SearchFiltersProps) => {
           onChange={(e) => update('keyword', e.target.value)}
         />
       </div>
-
-      {/* Filter row */}
       <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
         <Select value={filters.dealType} onValueChange={(v) => update('dealType', v)}>
           <SelectTrigger><SelectValue placeholder="거래유형" /></SelectTrigger>
@@ -56,17 +63,16 @@ const SearchFilters = ({ onFilter }: SearchFiltersProps) => {
             <SelectItem value="임대">임대</SelectItem>
           </SelectContent>
         </Select>
-
         <Select value={filters.propertyType} onValueChange={(v) => update('propertyType', v)}>
           <SelectTrigger><SelectValue placeholder="매물유형" /></SelectTrigger>
           <SelectContent>
             <SelectItem value="all">전체</SelectItem>
             <SelectItem value="토지">토지</SelectItem>
+            <SelectItem value="기타">기타</SelectItem>
             <SelectItem value="공장">공장</SelectItem>
             <SelectItem value="창고">창고</SelectItem>
           </SelectContent>
         </Select>
-
         <Select value={filters.region} onValueChange={(v) => update('region', v)}>
           <SelectTrigger><SelectValue placeholder="지역" /></SelectTrigger>
           <SelectContent>
@@ -74,7 +80,6 @@ const SearchFilters = ({ onFilter }: SearchFiltersProps) => {
             {REGIONS.map(r => <SelectItem key={r} value={r}>{r}</SelectItem>)}
           </SelectContent>
         </Select>
-
         <Select value={filters.priceRange} onValueChange={(v) => update('priceRange', v)}>
           <SelectTrigger><SelectValue placeholder="가격대" /></SelectTrigger>
           <SelectContent>
@@ -86,7 +91,6 @@ const SearchFilters = ({ onFilter }: SearchFiltersProps) => {
             <SelectItem value="10억~">10억 이상</SelectItem>
           </SelectContent>
         </Select>
-
         <Select value={filters.areaRange} onValueChange={(v) => update('areaRange', v)}>
           <SelectTrigger><SelectValue placeholder="면적" /></SelectTrigger>
           <SelectContent>

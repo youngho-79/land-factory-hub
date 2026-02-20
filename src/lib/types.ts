@@ -1,4 +1,4 @@
-export type PropertyType = '토지' | '공장' | '창고';
+export type PropertyType = '토지' | '공장' | '창고' | '기타';
 export type DealType = '매매' | '임대';
 export type PropertyStatus = 'active' | 'hidden' | 'sold';
 

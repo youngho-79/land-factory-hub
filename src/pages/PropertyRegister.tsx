@@ -155,7 +155,7 @@ const PropertyRegister = () => {
   const generateAIDescription = async () => {
     if (!form.address || !form.type) { toast({ title: '주소와 매물유형을 먼저 입력해주세요', variant: 'destructive' }); return; }
     if (!ANTHROPIC_API_KEY) {
-      const desc = `${form.address}에 위치한 ${form.zoning} ${form.type}입니다. 토지면적 ${areaSqm.toLocaleString()}㎡(${pyeong}평)${form.buildingAreaSqm ? `, 건축면적 ${form.buildingAreaSqm}㎡(${buildingPyeong}평), 연면적 ${form.totalFloorAreaSqm}㎡(${totalFloorPyeong}평)` : ''}, ${form.landCategory} 지목. ${form.dealType === '매매' ? `매매가 ${formatPrice(price)}, 평당 ${formatPrice(ppPyeong)}` : `보증금 ${formatPrice(price)}, 월세 ${formatPrice(parseFloat(form.monthlyRent) || 0)}`}.`;
+      const desc = `${form.address}에 위치한 ${form.zoning} ${form.type}입니다. 토지면적 ${areaSqm.toLocaleString()}㎡(${pyeong}평)${form.buildingAreaSqm ? `, 건축면적 ${form.buildingAreaSqm}㎡(${buildingPyeong}평), 연면적 ${form.totalFloorAreaSqm}㎡(${totalFloorPyeong}평)` : ''}, ${form.landCategory} 지목. ${form.dealType === '매매' ? `매매가 ${formatPrice(price)}, 평당 ${formatPrice(ppPyeong)}` : `보증금 ${formatPrice(price)}, 월세 ${formatPrice(parseFloat(form.monthlyRent)||0)}`}.`;
       update('description', desc);
       toast({ title: '기본 매물설명 생성 완료' }); return;
     }
@@ -166,8 +166,8 @@ const PropertyRegister = () => {
 토지: ${areaSqm}㎡(${pyeong}평) / 지목: ${form.landCategory} / 용도지역: ${form.zoning}
 ${form.buildingAreaSqm ? `건축면적: ${form.buildingAreaSqm}㎡(${buildingPyeong}평) / 연면적: ${form.totalFloorAreaSqm}㎡(${totalFloorPyeong}평)` : ''}
 ${form.groundFloor ? `층수: 지상${form.groundFloor}층` : ''} ${form.structureName ? `/ 구조: ${form.structureName}` : ''}
-도로: ${form.roadFrontage || '미입력'} / 형상: ${form.shape || '미입력'} / 지세: ${form.terrain || '미입력'}
-가격: ${form.dealType === '매매' ? `${formatPrice(price)}, 평당${formatPrice(ppPyeong)}` : `보증금${formatPrice(price)}/월${formatPrice(parseFloat(form.monthlyRent) || 0)}`}
+도로: ${form.roadFrontage||'미입력'} / 형상: ${form.shape||'미입력'} / 지세: ${form.terrain||'미입력'}
+가격: ${form.dealType==='매매' ? `${formatPrice(price)}, 평당${formatPrice(ppPyeong)}` : `보증금${formatPrice(price)}/월${formatPrice(parseFloat(form.monthlyRent)||0)}`}
 ${form.illegalBuilding ? '위반건축물 있음' : ''}
 작성: 위치·접근성(IC·도로·산업단지), 활용가능성, 투자장점을 전문적으로.`;
       const res = await fetch('https://api.anthropic.com/v1/messages', {
@@ -182,7 +182,7 @@ ${form.illegalBuilding ? '위반건축물 있음' : ''}
     finally { setLoadingAI(false); }
   };
 
-  // ✅ Gemini 블로그 포스팅 생성 (Atlas Cloud API 사용)
+  // ✅ Gemini 블로그 포스팅 생성 (SEO 최적화 + 주변정보 + 이미지 생성)
   const generateBlogPost = async () => {
     if (!form.address || !form.type) { toast({ title: '주소와 매물유형을 먼저 입력해주세요', variant: 'destructive' }); return; }
     if (!GEMINI_API_KEY) { toast({ title: 'VITE_GEMINI_API_KEY 환경변수 필요', description: 'Gemini API 키를 설정해주세요', variant: 'destructive' }); return; }
@@ -197,8 +197,8 @@ ${form.illegalBuilding ? '위반건축물 있음' : ''}
 - 토지면적: ${areaSqm}㎡(${pyeong}평) / 지목: ${form.landCategory} / 용도지역: ${form.zoning}
 ${form.buildingAreaSqm ? `- 건축면적: ${form.buildingAreaSqm}㎡(${buildingPyeong}평) / 연면적: ${form.totalFloorAreaSqm}㎡(${totalFloorPyeong}평)` : ''}
 ${form.groundFloor ? `- 층수: 지상${form.groundFloor}층 / 구조: ${form.structureName}` : ''}
-- 도로접면: ${form.roadFrontage || '미입력'}
-- 가격: ${form.dealType === '매매' ? `매매가 ${formatPrice(price)}, 평당 ${formatPrice(ppPyeong)}` : `보증금 ${formatPrice(price)}, 월세 ${formatPrice(parseFloat(form.monthlyRent) || 0)}`}
+- 도로접면: ${form.roadFrontage||'미입력'}
+- 가격: ${form.dealType==='매매' ? `매매가 ${formatPrice(price)}, 평당 ${formatPrice(ppPyeong)}` : `보증금 ${formatPrice(price)}, 월세 ${formatPrice(parseFloat(form.monthlyRent)||0)}`}
 ${form.illegalBuilding ? '- ⚠️ 위반건축물 있음' : ''}
 
 작성 요구사항:
@@ -215,38 +215,24 @@ ${form.illegalBuilding ? '- ⚠️ 위반건축물 있음' : ''}
 문체: 자연스럽고 부드러우면서 전문적, 신뢰감 있게
 주의: 과장 없이 사실 기반으로 작성`;
 
-      // Atlas Cloud API 호출
-      const res = await fetch('https://api.atlascloud.ai/v1/chat/completions', {
+      const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${GEMINI_API_KEY}`
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          model: 'google/gemini-3.1-pro-preview',
-          messages: [
-            { role: 'user', content: prompt }
-          ],
-          max_tokens: 2000, // 긴 블로그 글 생성을 위해 최대 토큰 설정
-          temperature: 0.7,
+          contents: [{ parts: [{ text: prompt }] }],
+          generationConfig: { temperature: 0.7, maxOutputTokens: 3000 },
         }),
       });
-
       const data = await res.json();
-      // 응답 구조 파싱 (OpenAI 스타일)
-      const text = data?.choices?.[0]?.message?.content;
-
+      const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
       if (text) {
         update('blogPost', text);
         setBlogTab('blog');
         toast({ title: '✅ Gemini 블로그 포스팅 생성 완료', description: '네이버 SEO 최적화 글이 작성되었습니다' });
-      } else {
-        console.error('API Response format error:', data);
-        throw new Error('응답 형식 오류');
-      }
+      } else throw new Error('응답 없음');
     } catch (e) {
       console.error(e);
-      toast({ title: '블로그 생성 실패', description: 'API 키 혹은 서버 응답을 확인해주세요', variant: 'destructive' });
+      toast({ title: '블로그 생성 실패', description: 'Gemini API 키를 확인해주세요', variant: 'destructive' });
     } finally { setLoadingBlog(false); }
   };
 
@@ -263,7 +249,7 @@ ${form.illegalBuilding ? '- ⚠️ 위반건축물 있음' : ''}
       <Header />
       <main className="flex-1 bg-background py-8">
         <div className="container mx-auto px-4 max-w-2xl">
-          <h1 className="text-2xl md:text-3xl font-bold text-foreground mb-2">매물 등록</h1>
+          <div className="flex items-center gap-3 mb-2"><a href="/admin/dashboard" className="text-muted-foreground hover:text-accent text-sm">← 대시보드</a><h1 className="text-2xl md:text-3xl font-bold text-foreground">매물 등록</h1></div>
           <p className="text-muted-foreground mb-8">관리자 전용 매물 등록 페이지입니다.</p>
           <form onSubmit={handleSubmit} className="space-y-6">
 
@@ -313,6 +299,7 @@ ${form.illegalBuilding ? '- ⚠️ 위반건축물 있음' : ''}
                     <SelectTrigger><SelectValue placeholder="선택" /></SelectTrigger>
                     <SelectContent>
                       <SelectItem value="토지">토지</SelectItem>
+                      <SelectItem value="기타">기타</SelectItem>
                       <SelectItem value="공장">공장</SelectItem>
                       <SelectItem value="창고">창고</SelectItem>
                     </SelectContent>

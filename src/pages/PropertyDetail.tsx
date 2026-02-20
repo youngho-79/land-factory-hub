@@ -1,5 +1,4 @@
 import { useParams, Link } from 'react-router-dom';
-import { useEffect, useRef } from 'react';
 import { ArrowLeft, MapPin, Phone, Share2, Printer } from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -9,39 +8,10 @@ import { sampleProperties } from '@/lib/sampleData';
 import { sqmToPyeong, pricePerPyeong, formatPrice, maskAddress, getYoutubeEmbedUrl } from '@/lib/types';
 
 const TELEGRAM_URL = import.meta.env.VITE_TELEGRAM_URL || 'https://t.me/your_id';
-const KAKAO_MAP_KEY = import.meta.env.VITE_KAKAO_MAP_KEY || '';
 const PHONE_NUMBER = import.meta.env.VITE_PHONE_NUMBER || '031-123-4567';
 
 const PropertyDetail = () => {
-  const { id } = useParams();
-  const mapRef = useRef<HTMLDivElement>(null);
-  const property = sampleProperties.find((p) => p.id === id);
-
-  // 카카오지도
-  useEffect(() => {
-    if (!property || !KAKAO_MAP_KEY || !mapRef.current) return;
-    const script = document.createElement('script');
-    script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${KAKAO_MAP_KEY}&libraries=services&autoload=false`;
-    script.async = true;
-    document.head.appendChild(script);
-    script.onload = () => {
-      (window as any).kakao.maps.load(() => {
-        const kakao = (window as any).kakao;
-        const geocoder = new kakao.maps.services.Geocoder();
-        geocoder.addressSearch(property.address, (result: any, status: any) => {
-          if (status === kakao.maps.services.Status.OK) {
-            const coords = new kakao.maps.LatLng(result[0].y, result[0].x);
-            const map = new kakao.maps.Map(mapRef.current, { center: coords, level: 4 });
-            const marker = new kakao.maps.Marker({ map, position: coords });
-            new kakao.maps.InfoWindow({
-              content: `<div style="padding:6px 10px;font-size:13px;font-weight:600;">${property.title}</div>`,
-            }).open(map, marker);
-          }
-        });
-      });
-    };
-    return () => { if (document.head.contains(script)) document.head.removeChild(script); };
-  }, [property]);
+  const { id } = useParams();  const property = sampleProperties.find((p) => p.id === id);
 
   const handleShare = async () => {
     if (navigator.share) {
@@ -210,21 +180,40 @@ const PropertyDetail = () => {
             <div className="px-6 py-4 text-sm leading-relaxed text-foreground whitespace-pre-line">{property.description}</div>
           </div>
 
-          {/* 카카오지도 */}
+          {/* 위치 지도 — 시/구 레벨만 표시 (번지 보안) */}
           <div className="bg-card border border-border rounded-xl overflow-hidden mb-6">
-            <h3 className="px-6 py-3 bg-muted font-semibold text-foreground">위치 지도</h3>
-            {KAKAO_MAP_KEY ? (
-              <div ref={mapRef} className="w-full h-72" />
-            ) : (
-              <div className="w-full h-48 bg-muted flex flex-col items-center justify-center gap-2 text-muted-foreground">
-                <MapPin className="w-8 h-8 opacity-30" />
-                <p className="text-sm">{maskedAddress}</p>
-                <a href={`https://map.kakao.com/link/search/${encodeURIComponent(property.address)}`}
-                  target="_blank" rel="noopener noreferrer" className="text-xs text-accent underline">
-                  카카오맵에서 보기 →
-                </a>
+            <div className="px-6 py-3 bg-muted flex items-center justify-between">
+              <h3 className="font-semibold text-foreground">📍 대략 위치</h3>
+              <span className="text-xs text-muted-foreground">정확한 위치는 문의 시 안내드립니다</span>
+            </div>
+            {/* 시/군/구 레벨 검색어로 카카오맵 iframe */}
+            <div className="relative w-full h-72 bg-muted">
+              <iframe
+                src={`https://map.kakao.com/link/search/${encodeURIComponent(
+                  // 번지 제거하고 시/군/구/동 까지만 추출
+                  property.address.replace(/\s+\d+.*$/, '')
+                )}`}
+                className="w-full h-full border-0"
+                title="대략 위치"
+                loading="lazy"
+              />
+              {/* 보안 오버레이 — 정확한 위치 클릭 방지 */}
+              <div className="absolute inset-0 pointer-events-none" />
+            </div>
+            <div className="px-6 py-3 flex items-center justify-between border-t border-border">
+              <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
+                <MapPin className="w-4 h-4" />
+                <span>{maskedAddress}</span>
               </div>
-            )}
+              <a
+                href={`https://map.kakao.com/link/search/${encodeURIComponent(property.address.replace(/\s+\d+.*$/, ''))}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-xs text-accent hover:underline"
+              >
+                카카오맵에서 보기 →
+              </a>
+            </div>
           </div>
 
           {/* 공인중개사법 의무사항 */}

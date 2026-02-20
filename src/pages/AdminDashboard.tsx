@@ -180,8 +180,8 @@ const AdminDashboard = () => {
                 ) : filtered.map((p) => (
                   <tr key={p.id} className={`hover:bg-muted/40 transition-colors ${p.status === 'hidden' ? 'opacity-50' : ''}`}>
                     <td className="px-4 py-3">
-                      <span className={`px-2 py-0.5 rounded text-xs font-medium ${STATUS_LABEL[p.status].color}`}>
-                        {STATUS_LABEL[p.status].label}
+                      <span className={`px-2 py-0.5 rounded text-xs font-medium ${STATUS_LABEL[p.status ?? 'active']?.color ?? 'bg-green-500 text-white'}`}>
+                        {STATUS_LABEL[p.status ?? 'active']?.label ?? '노출중'}
                       </span>
                     </td>
                     <td className="px-4 py-3">
