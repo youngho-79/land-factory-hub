@@ -16,6 +16,7 @@ export interface Property {
   roadFrontage?: string; // 도로접면
   shape?: string; // 형상
   terrain?: string; // 지세
+  illegalBuilding?: boolean; // 위반건축물 여부
   description: string;
   images: string[];
   createdAt: string;

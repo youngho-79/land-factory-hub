@@ -43,6 +43,7 @@ const PropertyDetail = () => {
     { label: '도로접면', value: property.roadFrontage || '-' },
     { label: '형상', value: property.shape || '-' },
     { label: '지세', value: property.terrain || '-' },
+    { label: '위반건축물', value: property.illegalBuilding ? '해당' : '해당없음' },
   ];
 
   return (
@@ -73,6 +74,9 @@ const PropertyDetail = () => {
             <div className="flex items-center gap-2 mb-2">
               <Badge className="bg-accent text-accent-foreground">{property.type}</Badge>
               <Badge variant={property.dealType === '매매' ? 'default' : 'secondary'}>{property.dealType}</Badge>
+              {property.illegalBuilding && (
+                <Badge className="bg-destructive text-destructive-foreground border-transparent">위반건축물</Badge>
+              )}
             </div>
             <h1 className="text-2xl md:text-3xl font-bold text-foreground">{property.title}</h1>
             <div className="flex items-center gap-1 text-muted-foreground text-sm mt-2">
