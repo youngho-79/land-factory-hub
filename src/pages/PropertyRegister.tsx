@@ -6,6 +6,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Label } from '@/components/ui/label';
+import { Checkbox } from '@/components/ui/checkbox';
 import { ZONING_LIST, LAND_CATEGORY_LIST, sqmToPyeong, formatPrice } from '@/lib/types';
 import { toast } from '@/hooks/use-toast';
 
@@ -24,6 +25,7 @@ const PropertyRegister = () => {
     roadFrontage: '',
     shape: '',
     terrain: '',
+    illegalBuilding: false,
     description: '',
   });
 
@@ -161,6 +163,17 @@ const PropertyRegister = () => {
                   <Label>지세</Label>
                   <Input value={form.terrain} onChange={(e) => update('terrain', e.target.value)} placeholder="예: 평지" />
                 </div>
+              </div>
+
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="illegalBuilding"
+                  checked={form.illegalBuilding}
+                  onCheckedChange={(checked) => setForm((prev) => ({ ...prev, illegalBuilding: !!checked }))}
+                />
+                <Label htmlFor="illegalBuilding" className="text-sm font-normal cursor-pointer">
+                  위반건축물 여부
+                </Label>
               </div>
             </div>
 

@@ -67,9 +67,12 @@ const PropertyCard = ({ property }: PropertyCardProps) => {
         </div>
 
         {/* Tags */}
-        <div className="flex gap-1.5 mt-3">
+        <div className="flex flex-wrap gap-1.5 mt-3">
           <Badge variant="secondary" className="text-xs px-2 py-0.5">{property.landCategory}</Badge>
           <Badge variant="outline" className="text-xs px-2 py-0.5">{property.zoning}</Badge>
+          {property.illegalBuilding && (
+            <Badge className="text-xs px-2 py-0.5 bg-destructive text-destructive-foreground border-transparent">위반건축물</Badge>
+          )}
         </div>
       </div>
     </Link>
