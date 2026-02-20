@@ -105,10 +105,10 @@ const About = () => {
               </div>
             </div>
 
-            {/* 지도 자리 */}
-            <div className="mt-6 rounded-xl h-64 flex items-center justify-center border border-border overflow-hidden">
+            {/* 지도 자리 (정확한 핀 표시) */}
+            <div className="mt-6 rounded-xl h-64 flex items-center justify-center border border-border overflow-hidden shadow-sm">
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3153.218559092497!2d126.77259451241771!3d37.784860111425176!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x357c917ee7b12dd7%3A0xe5f9b400f9a2e342!2z6rK96riw64-EIO2MjOyjvOyLnCDslYTrj5nrj5kg7ZWZ66C566GcIDEwNQ!5e0!3m2!1sko!2skr!4v1708428882000!5m2!1sko!2skr"
+                src={`https://maps.google.com/maps?q=${encodeURIComponent('경기도 파주시 학령로 105')}&t=&z=17&ie=UTF8&iwloc=&output=embed`}
                 width="100%"
                 height="100%"
                 style={{ border: 0 }}
