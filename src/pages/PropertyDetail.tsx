@@ -9,10 +9,9 @@ import { sampleProperties } from '@/lib/sampleData';
 import { sqmToPyeong, pricePerPyeong, formatPrice, maskAddress, getYoutubeEmbedUrl } from '@/lib/types';
 import LoanCalculator from '@/components/LoanCalculator';
 import ConsultationModal from '@/components/ConsultationModal';
-import KakaoMap from '@/components/KakaoMap';
 
 const TELEGRAM_URL = import.meta.env.VITE_TELEGRAM_URL || 'https://t.me/your_id';
-const PHONE_NUMBER = import.meta.env.VITE_PHONE_NUMBER || '031-123-4567';
+const PHONE_NUMBER = import.meta.env.VITE_PHONE_NUMBER || '010-2006-8279';
 
 const PropertyDetail = () => {
   const { id } = useParams();
@@ -197,29 +196,35 @@ const PropertyDetail = () => {
             <div className="px-6 py-4 text-sm leading-relaxed text-foreground whitespace-pre-line">{property.description}</div>
           </div>
 
-          {/* 위치 지도 — 시/구 레벨만 표시 (번지 보안) */}
+          {/* 위치 지도 — 구글맵 iframe */}
           <div className="bg-card border border-border rounded-xl overflow-hidden mb-6">
             <div className="px-6 py-3 bg-muted flex items-center justify-between">
               <h3 className="font-semibold text-foreground">📍 대략 위치</h3>
-              <span className="text-xs text-muted-foreground">정확한 위치는 문의 시 안내드립니다</span>
+              <span className="text-xs text-muted-foreground">정확한 지번은 문의 시 안내드립니다</span>
             </div>
-            {/* 카카오맵 연동 */}
+            {/* 구글맵 연동 */}
             <div className="relative w-full h-72 bg-muted">
-              <KakaoMap address={property.address} />
+              {/* 단순 주소 검색 쿼리로 iframe 연동 */}
+              <iframe
+                src={`https://www.google.com/maps/embed/v1/place?key=${import.meta.env.VITE_GEMINI_API_KEY}&q=${encodeURIComponent(property.address.replace(/\s+\d+.*$/, ''))}&zoom=14`}
+                className="w-full h-full border-0"
+                title="매물 위치"
+                loading="lazy"
+              />
+              {/* API키 없이 동작하도록 단순 검색 링크도 옵션지원 */}
+              <iframe
+                src={`https://maps.google.com/maps?q=${encodeURIComponent(property.address.replace(/\s+\d+.*$/, ''))}&t=&z=14&ie=UTF8&iwloc=&output=embed`}
+                className="absolute inset-0 w-full h-full border-0"
+                title="매물 위치"
+                loading="lazy"
+              />
+              <div className="absolute inset-0 pointer-events-none" />
             </div>
             <div className="px-6 py-3 flex items-center justify-between border-t border-border">
               <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
                 <MapPin className="w-4 h-4" />
                 <span>{maskedAddress}</span>
               </div>
-              <a
-                href={`https://map.kakao.com/link/search/${encodeURIComponent(property.address.replace(/\s+\d+.*$/, ''))}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-xs text-accent hover:underline"
-              >
-                카카오맵에서 보기 →
-              </a>
             </div>
           </div>
 
@@ -231,9 +236,8 @@ const PropertyDetail = () => {
                 { label: '사무소 명칭', value: property.agencyName || import.meta.env.VITE_AGENCY_NAME || 'px마을 부동산' },
                 { label: '대표 공인중개사', value: property.agentName || import.meta.env.VITE_AGENT_NAME || '이영호' },
                 { label: '등록번호', value: property.registrationNo || import.meta.env.VITE_REGISTRATION_NO || '제41480-2023-00017호' },
-                { label: '사업자등록번호', value: '768-51-00786' },
                 { label: '소재지', value: property.agencyAddress || import.meta.env.VITE_AGENCY_ADDRESS || '경기도 파주시 학령로105(아동동)' },
-                { label: '연락처', value: property.agencyPhone || import.meta.env.VITE_PHONE_NUMBER || '031-123-4567' },
+                { label: '연락처', value: property.agencyPhone || import.meta.env.VITE_PHONE_NUMBER || '010-2006-8279' },
               ].map((row) => (
                 <div key={row.label} className="flex gap-2">
                   <span className="text-muted-foreground w-28 shrink-0">{row.label}</span>

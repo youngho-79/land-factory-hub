@@ -3,7 +3,7 @@ import Footer from '@/components/Footer';
 import { Award, Clock, Users, MapPin, Phone } from 'lucide-react';
 
 const TELEGRAM_URL = import.meta.env.VITE_TELEGRAM_URL || 'https://t.me/your_id';
-const PHONE_NUMBER = import.meta.env.VITE_PHONE_NUMBER || '031-123-4567';
+const PHONE_NUMBER = import.meta.env.VITE_PHONE_NUMBER || '010-2006-8279';
 const AGENCY_NAME = import.meta.env.VITE_AGENCY_NAME || 'px마을 부동산';
 const AGENT_NAME = import.meta.env.VITE_AGENT_NAME || '이영호';
 const REGISTRATION_NO = import.meta.env.VITE_REGISTRATION_NO || '제41480-2023-00017호';
@@ -93,25 +93,29 @@ const About = () => {
                   { label: '사무소명', value: AGENCY_NAME },
                   { label: '대표', value: AGENT_NAME },
                   { label: '등록번호', value: REGISTRATION_NO },
-                  { label: '사업자등록번호', value: BUSINESS_NO },
                   { label: '주소', value: AGENCY_ADDRESS },
                   { label: '전화', value: PHONE_NUMBER },
                   { label: '영업시간', value: '평일 09:00 ~ 18:00 / 토요일 09:00 ~ 13:00' },
                 ].map((row) => (
-                  <div key={row.label} className="flex gap-3">
-                    <span className="text-muted-foreground w-20 shrink-0">{row.label}</span>
-                    <span className="font-medium text-foreground">{row.value}</span>
+                  <div key={row.label} className="flex gap-4">
+                    <span className="text-muted-foreground w-24 shrink-0 font-semibold">{row.label}</span>
+                    <span className="font-medium text-foreground break-keep">{row.value}</span>
                   </div>
                 ))}
               </div>
             </div>
 
             {/* 지도 자리 */}
-            <div className="mt-6 bg-muted rounded-xl h-48 flex items-center justify-center border border-border">
-              <div className="text-center text-muted-foreground/50 text-sm">
-                <MapPin className="w-6 h-6 mx-auto mb-2 opacity-40" />
-                <p>지도 (VITE_KAKAO_MAP_KEY 설정 시 자동 표시)</p>
-              </div>
+            <div className="mt-6 rounded-xl h-64 flex items-center justify-center border border-border overflow-hidden">
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3153.218559092497!2d126.77259451241771!3d37.784860111425176!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x357c917ee7b12dd7%3A0xe5f9b400f9a2e342!2z6rK96riw64-EIO2MjOyjvOyLnCDslYTrj5nrj5kg7ZWZ66C566GcIDEwNQ!5e0!3m2!1sko!2skr!4v1708428882000!5m2!1sko!2skr"
+                width="100%"
+                height="100%"
+                style={{ border: 0 }}
+                allowFullScreen={true}
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              ></iframe>
             </div>
 
             <div className="flex flex-col sm:flex-row gap-3 mt-8 justify-center">
